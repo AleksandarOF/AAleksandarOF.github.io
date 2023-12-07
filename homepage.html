@@ -3,57 +3,50 @@
 <head>
     <style>
         body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
             color: black;
         }
-    </style>
-</head>
-<body>
-<header>
-    <h1>Willkommen auf meiner Webseite</h1>
-</header>
-<style>
-    body {
-        background-color: #f0f0f0;
-        color: black;
-        margin: 0;
-        padding: 0;
-    }
 
-    nav {
-        background-color: #808080;
-        padding: 15px;
-    }
+        header {
+            background-color: #808080;
+            padding: 20px 0;
+            text-align: center;
+        }
 
-    nav ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-    }
+        nav {
+            background-color: #333;
+            padding: 15px;
+        }
 
-    nav li {
-        margin-right: 15px;
-    }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
 
-    nav a {
-        text-decoration: none;
-        color: black;
-        transition: color 0.3s ease;
-    }
+        nav li {
+            margin-right: 15px;
+        }
 
-    nav a:hover {
-        color: #FFFFFF;
-    }
-</style>
-<nav>
-    <ul>
-        <li><a href="homepage.html">Homepage</a></li>
-        <li><a href="index.html">Main</a></li>
-        <li><a href="batterie.html">Batterie Status</a></li>
-    </ul>
-</nav>
+        nav a {
+            text-decoration: none;
+            color: white;
+            transition: color 0.3s ease;
+        }
 
-<style>
+        nav a:hover {
+            color: #f0f0f0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -69,22 +62,45 @@
             text-align: left;
         }
 
-        #balanceInput, #amountInput {
-            width: 100px;
+        input[type="number"],
+        input[type="text"] {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
         }
-        .demo-layout-transparent {
-          background: url('../assets/demos/transparent.jpg') center / cover;
-        }
-        .demo-layout-transparent .mdl-layout__header,
-        .demo-layout-transparent .mdl-layout__drawer-button {
-          /* This background is dark, so we set text to white. Use 87% black instead if
-             your background is light. */
-             background-color: silver;
-          color: white;
-        }
-        </style>
 
-<main class="mdl-layout__content">
+        button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Willkommen auf meiner Webseite</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="homepage.html">Homepage</a></li>
+        <li><a href="index.html">Main</a></li>
+        <li><a href="batterie.html">Batterie Status</a></li>
+    </ul>
+</nav>
+
+<main>
     <h1>Expense Tracker</h1>
 
     <label for="balanceInput">Starting Balance:</label>
@@ -119,94 +135,93 @@
     <button onclick="clearCache()">Clear Cache</button>
 
     <script>
-              let balance = 0;
-              let expenses = [];
+        let balance = 0;
+        let expenses = [];
 
-              // Load balance from local storage
-              if (localStorage.getItem('balance')) {
-                  balance = parseFloat(localStorage.getItem('balance')) || 0;
-              }
+        // Load balance from local storage
+        if (localStorage.getItem('balance')) {
+            balance = parseFloat(localStorage.getItem('balance')) || 0;
+        }
 
-              // Load expenses from local storage
-              if (localStorage.getItem('expenses')) {
-                  expenses = JSON.parse(localStorage.getItem('expenses'));
-                  updateTable();
-              }
+        // Load expenses from local storage
+        if (localStorage.getItem('expenses')) {
+            expenses = JSON.parse(localStorage.getItem('expenses'));
+            updateTable();
+        }
 
-              function setInitialEntry() {
-                  const startingBalance = parseFloat(document.getElementById('balanceInput').value) || 0;
-                  balance = startingBalance;
-                  localStorage.setItem('balance', balance);
+        function setInitialEntry() {
+            const startingBalance = parseFloat(document.getElementById('balanceInput').value) || 0;
+            balance = startingBalance;
+            localStorage.setItem('balance', balance);
 
-                  const initialEntry = {
-                      description: 'Starting Balance',
-                      date: new Date().toLocaleDateString(),
-                      category: 'Initial Entry',
-                      amount: 0,
-                      balance: startingBalance,
-                  };
-                  expenses.push(initialEntry);
-                  updateTable();
-                  updateLocalStorage();
-              }
+            const initialEntry = {
+                description: 'Starting Balance',
+                date: new Date().toLocaleDateString(),
+                category: 'Initial Entry',
+                amount: 0,
+                balance: startingBalance,
+            };
+            expenses.push(initialEntry);
+            updateTable();
+            updateLocalStorage();
+        }
 
-              function addExpense() {
-                  const description = document.getElementById('descriptionInput').value;
-                  const category = document.getElementById('categoryInput').value;
-                  const amount = parseFloat(document.getElementById('amountInput').value);
+        function addExpense() {
+            const description = document.getElementById('descriptionInput').value;
+            const category = document.getElementById('categoryInput').value;
+            const amount = parseFloat(document.getElementById('amountInput').value);
 
-                  if (!description || !category || isNaN(amount)) {
-                      alert('Please fill in all fields with valid values.');
-                      return;
-                  }
+            if (!description || !category || isNaN(amount)) {
+                alert('Please fill in all fields with valid values.');
+                return;
+            }
 
-                  const date = new Date().toLocaleDateString();
-                  const newBalance = balance - amount;
+            const date = new Date().toLocaleDateString();
+            const newBalance = balance - amount;
 
-                  expenses.push({ description, date, category, amount, balance: newBalance });
-                  updateTable();
-                  updateBalance(newBalance);
-                  updateLocalStorage();
+            expenses.push({ description, date, category, amount, balance: newBalance });
+            updateTable();
+            updateBalance(newBalance);
+            updateLocalStorage();
 
-                  // Clear input fields
-                  document.getElementById('descriptionInput').value = '';
-                  document.getElementById('categoryInput').value = '';
-                  document.getElementById('amountInput').value = '';
-              }
+            // Clear input fields
+            document.getElementById('descriptionInput').value = '';
+            document.getElementById('categoryInput').value = '';
+            document.getElementById('amountInput').value = '';
+        }
 
-              function updateTable() {
-                  const tableBody = document.querySelector('#expenseTable tbody');
-                  tableBody.innerHTML = '';
+        function updateTable() {
+            const tableBody = document.querySelector('#expenseTable tbody');
+            tableBody.innerHTML = '';
 
-                  expenses.forEach(expense => {
-                      const row = tableBody.insertRow();
-                      Object.values(expense).forEach(value => {
-                          const cell = row.insertCell();
-                          cell.textContent = value;
-                      });
-                  });
-              }
+            expenses.forEach(expense => {
+                const row = tableBody.insertRow();
+                Object.values(expense).forEach(value => {
+                    const cell = row.insertCell();
+                    cell.textContent = value;
+                });
+            });
+        }
 
-              function updateBalance(newBalance) {
-                  balance = newBalance;
-                  localStorage.setItem('balance', balance);
-              }
+        function updateBalance(newBalance) {
+            balance = newBalance;
+            localStorage.setItem('balance', balance);
+        }
 
-              function updateLocalStorage() {
-                  localStorage.setItem('expenses', JSON.stringify(expenses));
-              }
+        function updateLocalStorage() {
+            localStorage.setItem('expenses', JSON.stringify(expenses));
+        }
 
-              function clearCache() {
-                  localStorage.removeItem('expenses');
-                  localStorage.removeItem('balance');
-                  expenses = [];
-                  balance = 0;
-                  updateTable();
-                  updateBalance(0);
-              }
-          </script>
+        function clearCache() {
+            localStorage.removeItem('expenses');
+            localStorage.removeItem('balance');
+            expenses = [];
+            balance = 0;
+            updateTable();
+            updateBalance(0);
+        }
+    </script>
 </main>
-</div>
 
 <script src="js/app.js"></script>
 
